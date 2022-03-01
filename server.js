@@ -1,6 +1,6 @@
 const express =require('express');
 const QueryString = require('qs');
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const app = express();
 const { animals } = require('./data/animals');
 
@@ -52,11 +52,6 @@ function filterByQuery(query, animalsArray) {
     }
     res.json(results);
 });
-
-
-
-
-
 
 
 app.listen(PORT,() => {
