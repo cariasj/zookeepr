@@ -2,7 +2,7 @@ const express =require('express');
 const QueryString = require('qs');
 const PORT = process.env.PORT || 3000;
 const app = express();
-const { animals } = require('./data/animals');
+const { animals } = require('./data/animals.json');
 
 function filterByQuery(query, animalsArray) {
     let personalityTraitsArray = [];
@@ -43,14 +43,30 @@ function filterByQuery(query, animalsArray) {
     return filteredResults;
   }
 
+ 
+  function findById(id, animalsArray) {
+      const result = animalsArray.filter(animal => animal.id === id)[0];
+      return result;
+  }
 
 
   app.get('/api/animals', (req, res) => {
     let results = animals;
     if (req.query) {
+        // req.query is multifaceted, often combining multiple parameters
         results = filterByQuery(req.query, results);
     }
     res.json(results);
+});
+
+app.get('/api/animals/:id', (req, res) =>{
+    //req.param is specific to a single property, often intended to retrieve a single record
+    const result = findById(req.params.id, animals);
+    if (result) {
+        res.json(result);
+    } else {
+        res.send(404);
+    }
 });
 
 
